@@ -26,17 +26,26 @@ def worker_handler(event, context):
     print(f"job_type: {job_type}")
     print(f"item: {item}")
 
+    sqs = boto3.resource("sqs")
+    queue = sqs.get_queue_by_name(QueueName="yelp-results-queue")
+
     if job_type == "reviews":
         url = item.get("url")
-        reviews = get_reviews(url)
-        print(reviews)
-        return reviews
+        result = get_reviews(url)
     elif job_type == "statuses":
         user_id = item.get("user_id")
         biz_id = item.get("biz_id")
         review_id = item.get("review_id")
-        statuses = fetch_status(user_id, biz_id, review_id)
-        print(statuses)
-        return statuses
+        result = fetch_status(user_id, biz_id, review_id)
     else:
         raise NotImplementedError(f"Unsupported job_type: {job_type}")
+
+    print(result)
+    print("sending to SQS")
+    sqs_message = {
+        "job_type": job_type,
+        "result": result,
+    }
+    _json = json.dumps(sqs_message, default=str)
+    queue.send_message(MessageBody=_json)
+    return _json

@@ -15,6 +15,8 @@ resource "aws_lambda_function" "dispatcher_lambda" {
   role = "${aws_iam_role.lambda_role.arn}"
   handler = "lambda.dispatcher_handler"
   runtime = "python3.8"
+  memory_size = "128"
+  timeout = 60
 
   # The filebase64sha256() function is available in Terraform 0.11.12 and later
   # For Terraform 0.11.11 and earlier, use the base64sha256() function and the file() function:
@@ -28,6 +30,8 @@ resource "aws_lambda_function" "worker_lambda" {
   role = "${aws_iam_role.lambda_role.arn}"
   handler = "lambda.worker_handler"
   runtime = "python3.8"
+  memory_size = "128"
+  timeout = 60
 
   # The filebase64sha256() function is available in Terraform 0.11.12 and later
   # For Terraform 0.11.11 and earlier, use the base64sha256() function and the file() function:
@@ -70,4 +74,69 @@ resource "aws_iam_policy_attachment" "attach-AWSLambdaRole" {
     "${aws_iam_role.lambda_role.name}"
   ]
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaRole"
+}
+
+resource "aws_iam_policy" "allow-yelp-results-queue-access" {
+  name        = "allow-yelp-results-queue-access"
+  description = "Allow Lambda to send message to yelp-results-queue SQS queue"
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Action": [
+        "sqs:SendMessage",
+        "sqs:GetQueueUrl"
+      ],
+      "Resource": [
+        "${aws_sqs_queue.yelp-results-queue.arn}"
+      ]
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_policy_attachment" "attach-allow-yelp-results-queue-access" {
+  name = "attach-AWSLambdaRole"
+  roles = [
+    "${aws_iam_role.lambda_role.name}"
+  ]
+  policy_arn = "${aws_iam_policy.allow-yelp-results-queue-access.arn}"
+}
+
+# SQS
+resource "aws_sqs_queue" "yelp-results-queue" {
+  name = "yelp-results-queue"
+  message_retention_seconds = 1209600
+  redrive_policy = jsonencode({
+    deadLetterTargetArn = aws_sqs_queue.yelp-results-dlq.arn
+    maxReceiveCount = 4
+  })
+}
+
+resource "aws_sqs_queue" "yelp-results-dlq" {
+  name = "yelp-results-dlq"
+  message_retention_seconds = 1209600
+}
+
+resource "aws_sqs_queue_policy" "test" {
+  queue_url = "${aws_sqs_queue.yelp-results-queue.id}"
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Id": "sqspolicy",
+  "Statement": [
+    {
+      "Sid": "First",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "sqs:SendMessage",
+      "Resource": "${aws_sqs_queue.yelp-results-queue.arn}"
+    }
+  ]
+}
+POLICY
 }
