@@ -5,11 +5,11 @@ verify_ssl = true
 
 [dev-packages]
 isort = "*"
-black = "*"
 pre-commit = "*"
+boto3 = "*"
 
 [packages]
-boto3 = "*"
+yelp-common = "*"
 
 [requires]
 python_version = "3.8"
