@@ -11,7 +11,7 @@ data "aws_caller_identity" "current" {}
 # Lambda
 resource "aws_lambda_function" "dispatcher_lambda" {
   filename = "lambda.zip"
-  function_name = "dispatcher"
+  function_name = "yelp_dispatcher_lambda"
   role = "${aws_iam_role.lambda_role.arn}"
   handler = "lambda.dispatcher_handler"
   runtime = "python3.8"
@@ -24,7 +24,7 @@ resource "aws_lambda_function" "dispatcher_lambda" {
 
 resource "aws_lambda_function" "worker_lambda" {
   filename = "lambda.zip"
-  function_name = "worker"
+  function_name = "yelp_worker_lambda"
   role = "${aws_iam_role.lambda_role.arn}"
   handler = "lambda.worker_handler"
   runtime = "python3.8"
@@ -62,4 +62,12 @@ resource "aws_iam_policy_attachment" "attach-AWSLambdaBasicExecutionRole" {
     "${aws_iam_role.lambda_role.name}"
   ]
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+
+resource "aws_iam_policy_attachment" "attach-AWSLambdaRole" {
+  name = "attach-AWSLambdaRole"
+  roles = [
+    "${aws_iam_role.lambda_role.name}"
+  ]
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaRole"
 }

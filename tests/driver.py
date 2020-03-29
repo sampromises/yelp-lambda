@@ -3,12 +3,12 @@ import json
 import boto3
 
 reviews_input = {
-    "type": "reviews",
+    "job_type": "reviews",
     "items": ["url_0", "url_1", "url_N",],
 }
 
 statuses_input = {
-    "type": "statuses",
+    "job_type": "statuses",
     "items": [
         {"biz_id": "biz_0", "review_id": "review_0"},
         {"biz_id": "biz_1", "review_id": "review_1"},
@@ -27,4 +27,4 @@ def invoke_lambda(lambda_name, event, dry_run=False):
 
 
 if __name__ == "__main__":
-    invoke_lambda("dispatcher", reviews_input)
+    invoke_lambda("yelp_dispatcher_lambda", reviews_input)
