@@ -135,11 +135,11 @@
         },
         "yelp-common": {
             "hashes": [
-                "sha256:16669273413d372de46682c500fbcff543671c2f6925f26af3af8725faba62b5",
-                "sha256:a620037b476ba4eb20d0ae9eb8a5046126e92b2230a7ca4501d13cc5f0c27220"
+                "sha256:4f8e3c624eac0fcccdf59f2f9c09de4c32e855a0aa546bf0198f66d8e96055f3",
+                "sha256:71391368a8f175f440848a1b94c833ac2f089c76d1aa94ff7a115e8b659065bf"
             ],
             "index": "pypi",
-            "version": "==1.1"
+            "version": "==1.1.3"
         }
     },
     "develop": {

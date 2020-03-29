@@ -1,20 +1,7 @@
 import json
 
 import boto3
-
-reviews_input = {
-    "job_type": "reviews",
-    "items": ["url_0", "url_1", "url_N",],
-}
-
-statuses_input = {
-    "job_type": "statuses",
-    "items": [
-        {"user_id": "user_id", "biz_id": "biz_0", "review_id": "review_0"},
-        {"user_id": "user_id", "biz_id": "biz_1", "review_id": "review_1"},
-        {"user_id": "user_id", "biz_id": "biz_2", "review_id": "review_2"},
-    ],
-}
+from tests.inputs import DispatcherInput
 
 
 def invoke_lambda(lambda_name, event, dry_run=False):
@@ -27,11 +14,5 @@ def invoke_lambda(lambda_name, event, dry_run=False):
 
 
 if __name__ == "__main__":
-    # invoke_lambda("yelp_dispatcher_lambda", reviews_input)
-    invoke_lambda(
-        "yelp_worker_lambda",
-        {
-            "job_type": "reviews",
-            "item": "https://www.yelp.com/user_details_reviews_self?userid=5prk8CtPPBHNpa6BOja2ug",
-        },
-    )
+    invoke_lambda("yelp_dispatcher_lambda", DispatcherInput.REVIEWS)
+    # invoke_lambda("yelp_dispatcher_lambda", DispatcherInput.STATUSES)
