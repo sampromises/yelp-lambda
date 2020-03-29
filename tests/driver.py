@@ -10,9 +10,9 @@ reviews_input = {
 statuses_input = {
     "job_type": "statuses",
     "items": [
-        {"biz_id": "biz_0", "review_id": "review_0"},
-        {"biz_id": "biz_1", "review_id": "review_1"},
-        {"biz_id": "biz_2", "review_id": "review_2"},
+        {"user_id": "user_id", "biz_id": "biz_0", "review_id": "review_0"},
+        {"user_id": "user_id", "biz_id": "biz_1", "review_id": "review_1"},
+        {"user_id": "user_id", "biz_id": "biz_2", "review_id": "review_2"},
     ],
 }
 
@@ -27,4 +27,11 @@ def invoke_lambda(lambda_name, event, dry_run=False):
 
 
 if __name__ == "__main__":
-    invoke_lambda("yelp_dispatcher_lambda", reviews_input)
+    # invoke_lambda("yelp_dispatcher_lambda", reviews_input)
+    invoke_lambda(
+        "yelp_worker_lambda",
+        {
+            "job_type": "reviews",
+            "item": "https://www.yelp.com/user_details_reviews_self?userid=5prk8CtPPBHNpa6BOja2ug",
+        },
+    )
