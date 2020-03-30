@@ -11,7 +11,7 @@ data "aws_caller_identity" "current" {}
 # Lambda
 resource "aws_lambda_function" "dispatcher_lambda" {
   filename = "lambda.zip"
-  function_name = "yelp_dispatcher_lambda"
+  function_name = "YelpDispatcherLambda"
   role = "${aws_iam_role.lambda_role.arn}"
   handler = "lambda.dispatcher_handler"
   runtime = "python3.8"
@@ -26,12 +26,18 @@ resource "aws_lambda_function" "dispatcher_lambda" {
 
 resource "aws_lambda_function" "worker_lambda" {
   filename = "lambda.zip"
-  function_name = "yelp_worker_lambda"
+  function_name = "YelpWorkerLambda"
   role = "${aws_iam_role.lambda_role.arn}"
   handler = "lambda.worker_handler"
   runtime = "python3.8"
   memory_size = "128"
   timeout = 60
+
+  environment {
+    variables = {
+      RESULTS_QUEUE_NAME = "${aws_sqs_queue.yelp-results-queue.name}"
+    }
+  }
 
   # The filebase64sha256() function is available in Terraform 0.11.12 and later
   # For Terraform 0.11.11 and earlier, use the base64sha256() function and the file() function:
@@ -109,7 +115,7 @@ resource "aws_iam_policy_attachment" "attach-allow-yelp-results-queue-access" {
 
 # SQS
 resource "aws_sqs_queue" "yelp-results-queue" {
-  name = "yelp-results-queue"
+  name = "YelpResultsQueue"
   message_retention_seconds = 1209600
   redrive_policy = jsonencode({
     deadLetterTargetArn = aws_sqs_queue.yelp-results-dlq.arn
@@ -118,7 +124,7 @@ resource "aws_sqs_queue" "yelp-results-queue" {
 }
 
 resource "aws_sqs_queue" "yelp-results-dlq" {
-  name = "yelp-results-dlq"
+  name = "YelpResultsDLQ"
   message_retention_seconds = 1209600
 }
 

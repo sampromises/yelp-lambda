@@ -1,7 +1,7 @@
 class DispatcherInput:
     REVIEWS = {
         "job_type": "reviews",
-        "items": [
+        "args_list": [
             {
                 "user_id": "5prk8CtPPBHNpa6BOja2ug",
                 "url": "https://www.yelp.com/user_details_reviews_self?rec_pagestart=0&userid=5prk8CtPPBHNpa6BOja2ug",
@@ -19,7 +19,7 @@ class DispatcherInput:
 
     STATUSES = {
         "job_type": "statuses",
-        "items": [
+        "args_list": [
             {
                 "user_id": "5prk8CtPPBHNpa6BOja2ug",
                 "biz_id": "chick-fil-a-westminster-5",

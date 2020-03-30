@@ -135,11 +135,11 @@
         },
         "yelp-common": {
             "hashes": [
-                "sha256:4f8e3c624eac0fcccdf59f2f9c09de4c32e855a0aa546bf0198f66d8e96055f3",
-                "sha256:71391368a8f175f440848a1b94c833ac2f089c76d1aa94ff7a115e8b659065bf"
+                "sha256:94214cff060e087af75df9b1af6b3877cfe1f5348c9d1e82b48785bcb2c15dbd",
+                "sha256:cbef846b7d6a98458124665a0bde4f41b7d717399909d11e72c2b86c22f63d4e"
             ],
             "index": "pypi",
-            "version": "==1.1.3"
+            "version": "==1.1.5"
         }
     },
     "develop": {
@@ -152,18 +152,18 @@
         },
         "boto3": {
             "hashes": [
-                "sha256:8bf7e3611d46e8214bf225169ac55de762d9d341514f81ebae885dd601138fcf",
-                "sha256:913fc7bbb9df147ed6fa0bd2b391469652ee8cad3e26ca2355e6ff774d9516fb"
+                "sha256:6f239e3798a1e4d5c9a8093b80c85110d1f872d4f61ea348aa89269b14da186f",
+                "sha256:ad774b0e98d093ae425b85fdb25e5ae70a02ebe036c4222e1b93444699719221"
             ],
             "index": "pypi",
-            "version": "==1.12.31"
+            "version": "==1.12.33"
         },
         "botocore": {
             "hashes": [
-                "sha256:3d4684f61ff07aa1b4cd30d13a6b8e6416142be5a2a55aedcc1d7974b9415bb1",
-                "sha256:86e3f25c9a94e9e85915ef3dcb13b496d25873a40b81f4e23a7a0250248d1be9"
+                "sha256:078a9731e054f9ee914a8eac77e445de3c1344a00d7eebfee9cae7f40b7f48e8",
+                "sha256:4240f2fb38c4cccc0fd319e6620a30a1c19b869c1e33ff864eec9cde7965a6ba"
             ],
-            "version": "==1.15.31"
+            "version": "==1.15.33"
         },
         "cfgv": {
             "hashes": [

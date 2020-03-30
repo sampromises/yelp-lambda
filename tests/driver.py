@@ -14,5 +14,5 @@ def invoke_lambda(lambda_name, event, dry_run=False):
 
 
 if __name__ == "__main__":
-    invoke_lambda("yelp_dispatcher_lambda", DispatcherInput.REVIEWS)
-    # invoke_lambda("yelp_dispatcher_lambda", DispatcherInput.STATUSES)
+    invoke_lambda("YelpDispatcherLambda", DispatcherInput.REVIEWS)
+    # invoke_lambda("YelpDispatcherLambda", DispatcherInput.STATUSES)
