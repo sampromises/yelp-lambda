@@ -18,6 +18,12 @@ resource "aws_lambda_function" "dispatcher_lambda" {
   memory_size = "128"
   timeout = 60
 
+  environment {
+    variables = {
+      WORKER_LAMBDA_NAME = "${aws_lambda_function.worker_lambda.function_name}"
+    }
+  }
+
   # The filebase64sha256() function is available in Terraform 0.11.12 and later
   # For Terraform 0.11.11 and earlier, use the base64sha256() function and the file() function:
   # source_code_hash = "${base64sha256(file("lambda.zip"))}"

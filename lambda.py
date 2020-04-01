@@ -14,6 +14,43 @@ from yelp_lambda.classes import (
 )
 
 
+class WorkerLambda:
+    _client = None
+
+    @staticmethod
+    def client():
+        if WorkerLambda._client is None:
+            WorkerLambda._client = boto3.client("lambda")
+        return WorkerLambda._client
+
+    @staticmethod
+    def invoke(event):
+        lambda_name = os.environ.get("WORKER_LAMBDA_NAME")
+        payload = json.dumps(event)
+        print(f"Invoking {lambda_name} with payload: {payload}")
+        WorkerLambda.client().invoke(
+            FunctionName=lambda_name, InvocationType="Event", Payload=payload,
+        )
+
+
+class ResultsSQS:
+    _queue = None
+
+    @staticmethod
+    def queue():
+        if ResultsSQS._queue is None:
+            ResultsSQS._queue = boto3.resource("sqs").get_queue_by_name(
+                QueueName=os.environ.get("RESULTS_QUEUE_NAME")
+            )
+        return ResultsSQS._queue
+
+    @staticmethod
+    def send_message(message):
+        _json = json.dumps(message, default=str)
+        print(f"Enqueuing to SQS, MessageBody={_json}")
+        ResultsSQS.queue().send_message(MessageBody=_json)
+
+
 def dispatcher_handler(event, context):
     print(f"event: {event}")
 
@@ -23,14 +60,9 @@ def dispatcher_handler(event, context):
     print(f"job_type: {job_type}")
     print(f"args_list: {args_list}")
 
-    aws_lambda = boto3.client("lambda")
     for args in args_list:
         worker_job = WorkerJob(job_type=job_type, args=args)
-        payload = json.dumps(worker_job)
-        print(f"Invoking worker lambda with payload: {payload}")
-        aws_lambda.invoke(
-            FunctionName="yelp_worker_lambda", InvocationType="Event", Payload=payload,
-        )
+        WorkerLambda.invoke(worker_job)
 
 
 def worker_handler(event, context):
@@ -41,10 +73,6 @@ def worker_handler(event, context):
     args = worker_job.get("args")
     print(f"job_type: {job_type}")
     print(f"args: {args}")
-
-    sqs = boto3.resource("sqs")
-    queue_name = os.environ.get("RESULTS_QUEUE_NAME", "YelpResultsQueue")
-    queue = sqs.get_queue_by_name(QueueName=queue_name)
 
     if job_type == JobType.REVIEWS.value:
         args = ReviewsArgs(**args)
@@ -58,7 +86,4 @@ def worker_handler(event, context):
         raise NotImplementedError(f"Unsupported job_type: {job_type}")
 
     worker_result = WorkerResult(job_type=job_type, result=result)
-    print(f"Enqueuing to SQS: {worker_result}")
-    _json = json.dumps(worker_result, default=str)
-    queue.send_message(MessageBody=_json)
-    return _json
+    ResultsSQS.send_message(worker_result)
