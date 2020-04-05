@@ -1,6 +1,7 @@
 import json
 
 import boto3
+import jsonpickle
 from tests.inputs import DispatcherInput
 
 
@@ -14,5 +15,5 @@ def invoke_lambda(lambda_name, event, dry_run=False):
 
 
 if __name__ == "__main__":
-    invoke_lambda("YelpDispatcherLambda", DispatcherInput.REVIEWS)
-    # invoke_lambda("YelpDispatcherLambda", DispatcherInput.STATUSES)
+    invoke_lambda("YelpDispatcherLambda", jsonpickle.encode(DispatcherInput.REVIEWS))
+    # invoke_lambda("YelpDispatcherLambda", jsonpickle.encode(DispatcherInput.STATUSES))

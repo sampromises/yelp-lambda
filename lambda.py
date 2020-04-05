@@ -1,16 +1,19 @@
 import json
 import os
+from typing import List
 
 import boto3
-from yelp_fetcher.reviews import fetch_reviews
-from yelp_fetcher.statuses import fetch_status
-from yelp_lambda.classes import (
-    DispatcherJob,
-    JobType,
-    ReviewsArgs,
-    StatusesArgs,
-    WorkerJob,
-    WorkerResult,
+import jsonpickle
+from yelp_fetcher.reviews import Review, fetch_reviews
+from yelp_fetcher.statuses import ReviewStatus, fetch_status
+from yelp_lambda.common_types import JobType
+from yelp_lambda.dispatcher_types import DispatcherRequest
+from yelp_lambda.worker_types import (
+    ReviewsWorkerRequest,
+    ReviewsWorkerResult,
+    StatusesWorkerRequest,
+    StatusesWorkerResult,
+    WorkerRequest,
 )
 
 
@@ -53,37 +56,45 @@ class ResultsSQS:
 
 def dispatcher_handler(event, context):
     print(f"event: {event}")
+    request: DispatcherRequest = jsonpickle.decode(event)
+    for worker_request in request.get_worker_requests():
+        print(f"Sending WorkerRequest: {worker_request}")
+        WorkerLambda.invoke(jsonpickle.encode(worker_request))
 
-    dispatcher_job = DispatcherJob(**event)
-    job_type = dispatcher_job.get("job_type")
-    args_list = dispatcher_job.get("args_list")
-    print(f"job_type: {job_type}")
-    print(f"args_list: {args_list}")
 
-    for args in args_list:
-        worker_job = WorkerJob(job_type=job_type, args=args)
-        WorkerLambda.invoke(worker_job)
+def _handle_reviews(request: ReviewsWorkerRequest):
+    reviews: List[Review] = fetch_reviews(request.user_id, request.url)
+
+    worker_result = jsonpickle.encode(
+        ReviewsWorkerResult(user_id=request.user_id, reviews=reviews,)
+    )
+
+    ResultsSQS.send_message(worker_result)
+
+
+def _handle_statuses(request: StatusesWorkerRequest):
+    status: ReviewStatus = fetch_status(
+        request.user_id, request.biz_id, request.review_id
+    )
+
+    worker_result = jsonpickle.encode(
+        StatusesWorkerResult(
+            user_id=status["user_id"],
+            biz_id=status["biz_id"],
+            review_id=status["review_id"],
+            is_alive=status["is_alive"],
+        )
+    )
+
+    ResultsSQS.send_message(worker_result)
 
 
 def worker_handler(event, context):
     print(f"event: {event}")
-
-    worker_job = WorkerJob(**event)
-    job_type = worker_job.get("job_type")
-    args = worker_job.get("args")
-    print(f"job_type: {job_type}")
-    print(f"args: {args}")
-
-    if job_type == JobType.REVIEWS.value:
-        args = ReviewsArgs(**args)
-        result = fetch_reviews(args.get("user_id"), args.get("url"))
-    elif job_type == JobType.STATUSES.value:
-        args = StatusesArgs(**args)
-        result = fetch_status(
-            args.get("user_id"), args.get("biz_id"), args.get("review_id")
-        )
+    request: WorkerRequest = jsonpickle.decode(event)
+    if request.job_type == JobType.REVIEWS.value:
+        _handle_reviews(request)
+    elif request.job_type == JobType.STATUSES.value:
+        _handle_statuses(request)
     else:
-        raise NotImplementedError(f"Unsupported job_type: {job_type}")
-
-    worker_result = WorkerResult(job_type=job_type, result=result)
-    ResultsSQS.send_message(worker_result)
+        raise NotImplementedError(f"Unsupported JobType: {request.job_type}")

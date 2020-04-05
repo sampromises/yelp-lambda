@@ -1,199 +1,46 @@
-class DispatcherInput:
-    REVIEWS = {
-        "job_type": "reviews",
-        "args_list": [
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "url": "https://www.yelp.com/user_details_reviews_self?rec_pagestart=0&userid=5prk8CtPPBHNpa6BOja2ug",
-            },
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "url": "https://www.yelp.com/user_details_reviews_self?rec_pagestart=10&userid=5prk8CtPPBHNpa6BOja2ug",
-            },
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "url": "https://www.yelp.com/user_details_reviews_self?rec_pagestart=20&userid=5prk8CtPPBHNpa6BOja2ug",
-            },
-        ],
-    }
+from yelp_lambda.dispatcher_types import (
+    ReviewsDispatcherRequest,
+    StatusesDispatcherRequest,
+)
 
-    STATUSES = {
-        "job_type": "statuses",
-        "args_list": [
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "biz_id": "chick-fil-a-westminster-5",
-                "biz_name": "Chick-fil-A",
-                "review_id": "Pg6aIJBjs8CNVJvUtUBPmg",
-                "review_date": "3/28/2020",
-            },
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "biz_id": "walmart-huntington-beach-2",
-                "biz_name": "Walmart",
-                "review_id": "OpvxuBt1ChGi9rfLwTAgMA",
-                "review_date": "3/26/2020",
-            },
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "biz_id": "total-wine-and-more-huntington-beach-2",
-                "biz_name": "Total Wine & More",
-                "review_id": "SLe2OO-06aM1GbA6TJiLJw",
-                "review_date": "3/26/2020",
-            },
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "biz_id": "david-l-baker-memorial-golf-center-fountain-valley",
-                "biz_name": "David L Baker Memorial Golf Center",
-                "review_id": "VOBaprFuLryTvTvyGjIjCQ",
-                "review_date": "3/17/2020",
-            },
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "biz_id": "chipotle-mexican-grill-fountain-valley-3",
-                "biz_name": "Chipotle Mexican Grill",
-                "review_id": "dTxo85w-ghJCcnubgCtV6g",
-                "review_date": "3/17/2020",
-            },
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "biz_id": "in-n-out-burger-cerritos",
-                "biz_name": "In-N-Out Burger",
-                "review_id": "aP03ALU4ryjJ-2rn6OK0lA",
-                "review_date": "3/15/2020",
-            },
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "biz_id": "la-mirada-golf-course-la-mirada",
-                "biz_name": "La Mirada Golf Course - Temp. CLOSED",
-                "review_id": "LdsYmD1P0LzydhrKHHT73A",
-                "review_date": "3/15/2020",
-            },
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "biz_id": "bunker21-artesia",
-                "biz_name": "Bunker21",
-                "review_id": "CPx8tpbxRHrofwc5PdZ5Kw",
-                "review_date": "1/1/2020",
-            },
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "biz_id": "aroma-golf-range-los-angeles",
-                "biz_name": "Aroma Golf Range",
-                "review_id": "sUKuLnHWVLrlsJtU2-4i0w",
-                "review_date": "3/14/2020",
-            },
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "biz_id": "han-yang-buena-park",
-                "biz_name": "Han Yang",
-                "review_id": "3-nA8CTpJVUz0Xubin1ORQ",
-                "review_date": "1/2/2020",
-            },
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "biz_id": "mcdonalds-la-palma-4",
-                "biz_name": "McDonald’s",
-                "review_id": "_-7pO5Jq5gmS-4ZhdptqHw",
-                "review_date": "3/13/2020",
-            },
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "biz_id": "aloha-family-billiards-buena-park",
-                "biz_name": "Aloha Family Billiards",
-                "review_id": "U_yiTX51HWo78jOaV0pIxQ",
-                "review_date": "3/13/2020",
-            },
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "biz_id": "kabab-crush-artesia-4",
-                "biz_name": "Kabab Crush",
-                "review_id": "apHy99vF1l5XHI8Hxmy9Ow",
-                "review_date": "12/27/2019",
-            },
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "biz_id": "kaju-soft-tofu-restaurant-buena-park",
-                "biz_name": "Kaju Soft Tofu Restaurant",
-                "review_id": "-H_0dEdwpe2mhdYb_wWMrA",
-                "review_date": "3/12/2020",
-            },
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "biz_id": "iron-wood-nine-golf-course-cerritos",
-                "biz_name": "Iron-Wood Nine Golf Course",
-                "review_id": "blSV3JFheTbvc6lsuuAfBQ",
-                "review_date": "12/27/2019",
-            },
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "biz_id": "chipotle-mexican-grill-cerritos-9",
-                "biz_name": "Chipotle Mexican Grill",
-                "review_id": "ofWhnV6m26kMyCpUjT56XA",
-                "review_date": "3/12/2020",
-            },
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "biz_id": "yoko-buena-park",
-                "biz_name": "Yoko",
-                "review_id": "MS1f3LaFfHeh5kcF2qt-1A",
-                "review_date": "12/25/2019",
-            },
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "biz_id": "myung-dong-kyoja-anaheim-5",
-                "biz_name": "Myung Dong Kyoja",
-                "review_id": "X0_-zEk0_CKj24wEEoau9A",
-                "review_date": "3/12/2020",
-            },
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "biz_id": "roger-dunn-golf-shops-seal-beach-3",
-                "biz_name": "Roger Dunn Golf Shops",
-                "review_id": "Ve3BLwnfMTXZMwCViW-MLg",
-                "review_date": "12/27/2019",
-            },
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "biz_id": "thai-addict-cuisine-buena-park-2",
-                "biz_name": "Thai Addict Cuisine",
-                "review_id": "ZfHJEeZFKTPFwAJGMYiXrA",
-                "review_date": "1/4/2020",
-            },
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "biz_id": "chick-fil-a-cerritos",
-                "biz_name": "Chick-fil-A",
-                "review_id": "dy_dxor2rVhpNuSUrrBw0w",
-                "review_date": "12/30/2019",
-            },
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "biz_id": "panda-express-cerritos",
-                "biz_name": "Panda Express",
-                "review_id": "-eb-SRIXvQ_tyJKFldJMyw",
-                "review_date": "12/29/2019",
-            },
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "biz_id": "in-n-out-burger-la-mirada",
-                "biz_name": "In-N-Out Burger",
-                "review_id": "MD1zzz0eP0GgRLfDqzS7og",
-                "review_date": "12/26/2019",
-            },
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "biz_id": "jangmo-jip-la-palma",
-                "biz_name": "Jangmo Jip",
-                "review_id": "1TFeSFZdJts8Vd-x5XV3rA",
-                "review_date": "12/25/2019",
-            },
-            {
-                "user_id": "5prk8CtPPBHNpa6BOja2ug",
-                "biz_id": "las-galas-los-angeles",
-                "biz_name": "Las Galas",
-                "review_id": "q2pionpcY_-WZPwSWelTFw",
-                "review_date": "12/25/2019",
-            },
+
+class DispatcherInput:
+    REVIEWS = ReviewsDispatcherRequest(
+        user_id="5prk8CtPPBHNpa6BOja2ug",
+        urls=[
+            "https://www.yelp.com/user_details_reviews_self?rec_pagestart=0&userid=5prk8CtPPBHNpa6BOja2ug",
+            "https://www.yelp.com/user_details_reviews_self?rec_pagestart=10&userid=5prk8CtPPBHNpa6BOja2ug",
+            "https://www.yelp.com/user_details_reviews_self?rec_pagestart=20&userid=5prk8CtPPBHNpa6BOja2ug",
         ],
-    }
+    )
+
+    STATUSES = StatusesDispatcherRequest(
+        user_id="5prk8CtPPBHNpa6BOja2ug",
+        biz_ids_to_review_ids={
+            "chick-fil-a-westminster-5": "Pg6aIJBjs8CNVJvUtUBPmg",
+            "walmart-huntington-beach-2": "OpvxuBt1ChGi9rfLwTAgMA",
+            "total-wine-and-more-huntington-beach-2": "SLe2OO-06aM1GbA6TJiLJw",
+            "david-l-baker-memorial-golf-center-fountain-valley": "VOBaprFuLryTvTvyGjIjCQ",
+            "chipotle-mexican-grill-fountain-valley-3": "dTxo85w-ghJCcnubgCtV6g",
+            "in-n-out-burger-cerritos": "aP03ALU4ryjJ-2rn6OK0lA",
+            "la-mirada-golf-course-la-mirada": "LdsYmD1P0LzydhrKHHT73A",
+            "bunker21-artesia": "CPx8tpbxRHrofwc5PdZ5Kw",
+            "aroma-golf-range-los-angeles": "sUKuLnHWVLrlsJtU2-4i0w",
+            "han-yang-buena-park": "3-nA8CTpJVUz0Xubin1ORQ",
+            "mcdonalds-la-palma-4": "_-7pO5Jq5gmS-4ZhdptqHw",
+            "aloha-family-billiards-buena-park": "U_yiTX51HWo78jOaV0pIxQ",
+            "kabab-crush-artesia-4": "apHy99vF1l5XHI8Hxmy9Ow",
+            "kaju-soft-tofu-restaurant-buena-park": "-H_0dEdwpe2mhdYb_wWMrA",
+            "iron-wood-nine-golf-course-cerritos": "blSV3JFheTbvc6lsuuAfBQ",
+            "chipotle-mexican-grill-cerritos-9": "ofWhnV6m26kMyCpUjT56XA",
+            "yoko-buena-park": "MS1f3LaFfHeh5kcF2qt-1A",
+            "myung-dong-kyoja-anaheim-5": "X0_-zEk0_CKj24wEEoau9A",
+            "roger-dunn-golf-shops-seal-beach-3": "Ve3BLwnfMTXZMwCViW-MLg",
+            "thai-addict-cuisine-buena-park-2": "ZfHJEeZFKTPFwAJGMYiXrA",
+            "chick-fil-a-cerritos": "dy_dxor2rVhpNuSUrrBw0w",
+            "panda-express-cerritos": "-eb-SRIXvQ_tyJKFldJMyw",
+            "in-n-out-burger-la-mirada": "MD1zzz0eP0GgRLfDqzS7og",
+            "jangmo-jip-la-palma": "1TFeSFZdJts8Vd-x5XV3rA",
+            "las-galas-los-angeles": "q2pionpcY_-WZPwSWelTFw",
+        },
+    )
