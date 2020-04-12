@@ -143,11 +143,11 @@
         },
         "yelp-common": {
             "hashes": [
-                "sha256:4f2a94e4caeabf32e02681c2fd2da98ad08b0e41c68e2ba39fd3c6d9d939213b",
-                "sha256:dd731f1f35da49faf727e658e65c1bb6e7f64c8f07403a8ea9b85b877f405a09"
+                "sha256:3328257984eeeb785a3f916fb85587f4968eac6f77de6aa0a9b973a937b61320",
+                "sha256:6a9478649ac93a258917222558cc62052592284fb26001dd837fe562295ea7aa"
             ],
             "index": "pypi",
-            "version": "==1.1.7"
+            "version": "==1.1.8"
         }
     },
     "develop": {
@@ -160,18 +160,18 @@
         },
         "boto3": {
             "hashes": [
-                "sha256:57397f9ad3e9afc17e6100a38c6e631b6545aabc7f8c38b86ff2c6f5931d0ebf",
-                "sha256:911994ef46595e8ab9f08eee6b666caea050937b96d54394292e958330cd7ad5"
+                "sha256:970bd7b332e73d7b51077ed36772c634811b38c81b0cc6ed0f910e50d7ebadf8",
+                "sha256:cdd79a3a7bbe1f33a365f0acfcc75c4405b482b3eb9ce3f4e6b16c418e201ac3"
             ],
             "index": "pypi",
-            "version": "==1.12.36"
+            "version": "==1.12.39"
         },
         "botocore": {
             "hashes": [
-                "sha256:5fc5e8629b5375d591a47d05baaff6ccdf5c3b617aad1e14286be458092c9e53",
-                "sha256:d2233e19b6a60792185b15fe4cd8f92c5579298e5079daf17f66f6e639585e3a"
+                "sha256:94232b44e1540b7e043e220bd43f855400d0a243e926b26b3fb72994e971d518",
+                "sha256:e20ba56476b1031ce5ac8e22b59dabc75bd0e03231f124ed6b9ff99fe0b0c96b"
             ],
-            "version": "==1.15.36"
+            "version": "==1.15.39"
         },
         "cfgv": {
             "hashes": [
@@ -290,10 +290,10 @@
         },
         "virtualenv": {
             "hashes": [
-                "sha256:6ea131d41c477f6c4b7863948a9a54f7fa196854dbef73efbdff32b509f4d8bf",
-                "sha256:94f647e12d1e6ced2541b93215e51752aecbd1bbb18eb1816e2867f7532b1fe1"
+                "sha256:00cfe8605fb97f5a59d52baab78e6070e72c12ca64f51151695407cc0eb8a431",
+                "sha256:c8364ec469084046c779c9a11ae6340094e8a0bf1d844330fc55c1cefe67c172"
             ],
-            "version": "==20.0.16"
+            "version": "==20.0.17"
         }
     }
 }
