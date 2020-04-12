@@ -82,7 +82,7 @@ def _handle_statuses(request: StatusesWorkerRequest):
             user_id=status["user_id"],
             biz_id=status["biz_id"],
             review_id=status["review_id"],
-            is_alive=status["is_alive"],
+            status=status["status"],
         )
     )
 
