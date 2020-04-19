@@ -1,5 +1,6 @@
 import json
 import os
+import time
 from typing import List
 
 import boto3
@@ -57,9 +58,16 @@ class ResultsSQS:
 def dispatcher_handler(event, context):
     print(f"event: {event}")
     request: DispatcherRequest = jsonpickle.decode(event)
-    for worker_request in request.get_worker_requests():
-        print(f"Sending WorkerRequest: {worker_request}")
-        WorkerLambda.invoke(jsonpickle.encode(worker_request))
+
+    def batch(iterable, batch_size=10):
+        for i in range(0, len(iterable), batch_size):
+            yield iterable[i : min(i + batch_size, len(iterable))]
+
+    for worker_requests in batch(request.get_worker_requests()):
+        for worker_request in worker_requests:
+            print(f"Sending WorkerRequest: {worker_request}")
+            WorkerLambda.invoke(jsonpickle.encode(worker_request))
+        time.sleep(5)
 
 
 def _handle_reviews(request: ReviewsWorkerRequest):
@@ -73,9 +81,7 @@ def _handle_reviews(request: ReviewsWorkerRequest):
 
 
 def _handle_statuses(request: StatusesWorkerRequest):
-    status: ReviewStatus = fetch_status(
-        request.user_id, request.biz_id, request.review_id
-    )
+    status: ReviewStatus = fetch_status(request.user_id, request.biz_id, request.review_id)
 
     worker_result = jsonpickle.encode(
         StatusesWorkerResult(
